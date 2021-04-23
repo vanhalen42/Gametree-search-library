@@ -17,9 +17,8 @@ Node SearchChild(Node* NodeArray, int state_number, int* N)
             Child = NodeArray[i];
 
             for(int j = i ; j < *N - 1 ; j++)
-            {
                 NodeArray[j] = NodeArray[j+1];
-            }
+
             NodeArray[*N-1] = NULL;  
             (*N)--;
             return Child;
@@ -28,7 +27,7 @@ Node SearchChild(Node* NodeArray, int state_number, int* N)
     return NULL;
 }
 
-void generateTree(Node TreeNode, Node* NodeArray, int* N)
+void generateTree(Node TreeNode, Node* NodeArray, int* N, int depth)
 {
     Node Child = SearchChild(NodeArray,TreeNode->state_number,N);
     
@@ -38,11 +37,13 @@ void generateTree(Node TreeNode, Node* NodeArray, int* N)
         return;
     }
 
+    
     int i = 0;
     while(Child != NULL)
     {
+        Child->depth = depth;
         TreeNode->children[i] = Child;
-        generateTree(TreeNode->children[i],NodeArray,N);
+        generateTree(TreeNode->children[i],NodeArray,N,depth + 1);
         Child = SearchChild(NodeArray,TreeNode->state_number,N);
         i++;
     }
@@ -53,7 +54,7 @@ void generateTree(Node TreeNode, Node* NodeArray, int* N)
 
 Node inputTree()
 {
-    int NoOfNodes;
+    int NoOfNodes,Depth = 0;
     scanf("%d",&NoOfNodes);
 
     Node* NodeArray = (Node*) malloc(NoOfNodes*sizeof(node));
@@ -66,7 +67,8 @@ Node inputTree()
     }
 
     Node Root = SearchChild(NodeArray,-1,& NoOfNodes);
-    generateTree(Root,NodeArray,& NoOfNodes);
+    Root->depth = 0;
+    generateTree(Root,NodeArray,& NoOfNodes, Depth + 1);
     return Root;
 }
 
@@ -74,14 +76,14 @@ void printTree(Node TreeNode)
 {
     if(TreeNode->number_of_children == 0)
     {
-        printf("%d: No Children\n",TreeNode->value);
+        printf("%d: No Children Depth: %d\n",TreeNode->value,TreeNode->depth);
         return;
     }
 
     printf("%d: ",TreeNode->value);
     for(int i = 0 ; i < TreeNode->number_of_children ; i++)
         printf("%d ",TreeNode->children[i]->value);
-    printf("\n");
+    printf("Depth: %d\n",TreeNode->depth);
 
     for(int i = 0 ; i < TreeNode->number_of_children ; i++)
         printTree(TreeNode->children[i]);
