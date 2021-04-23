@@ -39,7 +39,7 @@ void traversing_algo(node *root, int n)
     queue_size++;
 
     // loop for traversal
-    while (!isempty(priority_queue, n)) // while priority queue is not empty
+    while (!isempty(priority_queue, queue_size)) // while priority queue is not empty
     {
         for (int i = 0; i < priority_queue[0]->number_of_children; i++)
         {
