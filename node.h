@@ -1,3 +1,5 @@
+#ifndef NODE_H
+#define NODE_H
 /*
     The idea behind Tree Search Library is that, once given the 'comparator' function between nodes by 
     the user, the library can use this to perform any kind of search by the change of just one function.
@@ -29,16 +31,17 @@ typedef struct node
     // You (as a developer) can add any extra information here [Will not be touched by user]
     int depth, seen_time, number_of_children;
     struct node *children[10000];
-}node;
+} node;
 
-bool node_comparator(node *a, node *b)
-{
-    // User puts in the node comparator here
-    return a->value < b->value; // A sample comparator
-}
+typedef node *Node;
+// bool node_comparator(node *a, node *b);
+void generateTree(Node *NodeArray, int N); //generates a tree out of the array of nodes
+Node inputTree();                          //takes input from the user and returns a tree
+void printNode(Node TreeNode);             //prints the attributes of a node
+void printTree(Node TreeNode);             //traverses through each node of the tree and prints its attributes
+void swap(node **a, node **b);
+bool isempty(node *priority_queue[], int n); //checks if the priority queue is empty(1) or not(0)
+void heapify(node **priority_queue, int i, int queue_size);
+void traversing_algo(node *root, int n);
 
-void input_node(node *a)
-{
-    // inputs the information of one node. Use this in a loop to input all the nodes.
-    scanf("%d %d %d", &(a->state_number), &(a->value), &(a->parent));
-}
+#endif
