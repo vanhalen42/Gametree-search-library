@@ -22,8 +22,8 @@
 
 #include <stdio.h>
 #include <stdbool.h>
-typedef struct node node;
-struct node
+
+typedef struct node
 {
     int state_number;
     int value;
@@ -31,8 +31,8 @@ struct node
 
     // You (as a developer) can add any extra information here [Will not be touched by user]
     int depth, seen_time, number_of_children;
-    node *children[10000];
-};
+    struct node *children[10000];
+}node;
 
 bool node_comparator(node *a, node *b)
 {
