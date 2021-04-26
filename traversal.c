@@ -105,8 +105,10 @@ void traversing_algo(node *root, int n)
     root->seen_time = seen_time;
     seen_time++;
     queue_size++;
-
+    int maxdepthsize = 0;
     // loop for traversal
+    long int depths = 0;
+    int numberofelems = 1;
     while (!isempty(priority_queue, queue_size)) // while priority queue is not empty
     {
         for (int i = 0; i < priority_queue[0]->number_of_children; i++)
@@ -119,8 +121,15 @@ void traversing_algo(node *root, int n)
         }
         swap(&priority_queue[0], &priority_queue[queue_size - 1]); //pop the first element from the priority queue by swapping with last element
         printNode(priority_queue[queue_size - 1]);                 //print the first element which has now been moved to the last
+        depths += priority_queue[queue_size - 1]->depth;
+        maxdepth[maxdepthsize] = priority_queue[queue_size - 1]->depth;
+        bfactor[maxdepthsize] = priority_queue[queue_size - 1]->number_of_children;
+        maxdepthsize++;
+        avgdepth[numberofelems - 1] = (double)depths / numberofelems;
+        numberofelems++;
         priority_queue[queue_size - 1] = NULL;
         queue_size--;
         heapify(priority_queue, 0, queue_size);
     }
+    free(priority_queue);
 }
