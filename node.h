@@ -15,7 +15,6 @@
     <state_number> <value> <parent_state_number>
     ...
     n times
-
     For now, write the main function and input the nodes, fill the values of number_of_children, children
     (in the struct) and try to write the priority queue using the comparator.
 */
