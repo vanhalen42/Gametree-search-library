@@ -87,7 +87,7 @@ void DeleteTree(Node TreeNode)
     }
 }
 
-void printTree2(Node TreeNode, int n)
+void printTree2(Node TreeNode)
 {
     int a[100000] = {0};
     printNodenoice(TreeNode, a);

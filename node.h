@@ -47,6 +47,6 @@ void swap(node **a, node **b);
 bool isempty(node *priority_queue[], int n); //checks if the priority queue is empty(1) or not(0)
 void heapify(node **priority_queue, int i, int queue_size);
 void traversing_algo(node *root, int n);
-void printTree2(Node TreeNode, int n);
+void printTree2(Node TreeNode);
 void printNodenoice(Node TreeNode, int what_to_do[]);
 #endif
