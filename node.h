@@ -43,6 +43,9 @@ void generateTree(Node *NodeArray, int N); //generates a tree out of the array o
 Node inputTree();                          //takes input from the user and returns a tree
 void printNode(Node TreeNode);             //prints the attributes of a node
 void printTree(Node TreeNode);             //traverses through each node of the tree and prints its attributes
+void printTree2(Node TreeNode);            //shows the structure of the tree while printing minimal information (the state number and value)
+void DeleteTree(Node TreeNode);            //Frees memory allocated to the tree
+
 void swap(node **a, node **b);
 bool isempty(node *priority_queue[], int n); //checks if the priority queue is empty(1) or not(0)
 void heapify(node **priority_queue, int i, int queue_size);
