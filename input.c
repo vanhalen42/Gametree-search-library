@@ -87,25 +87,35 @@ void DeleteTree(Node TreeNode)
     }
 }
 
-void printNodenoice(Node TreeNode)
+void printTree2(Node TreeNode, int n)
+{
+    int a[100000] = {0};
+    printNodenoice(TreeNode, a);
+}
+void printNodenoice(Node TreeNode, int what_to_do[])
 {
 
-    printf("%d\n", TreeNode->value);
+    printf("%d (value : %d)\n", TreeNode->state_number, TreeNode->value);
 
     for (int i = 0; i < TreeNode->number_of_children; i++)
     {
 
         for (int i = 0; i < TreeNode->depth; i++)
-            printf("  ");
-
+        {
+            if (what_to_do[i])
+                printf("      ");
+            else
+                printf("│     ");
+        }
         if (i != TreeNode->number_of_children - 1)
         {
-            printf("├─");
+            printf("├─────");
         }
         else if (i == TreeNode->number_of_children - 1)
-            printf("└─");
-        printNodenoice(TreeNode->children[i]);
+        {
+            printf("└─────");
+            what_to_do[TreeNode->depth] = 1;
+        }
+        printNodenoice(TreeNode->children[i], what_to_do);
     }
 }
-
-
