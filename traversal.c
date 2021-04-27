@@ -1,38 +1,9 @@
-// not tested yet
 #include <stdlib.h>
 #include <stdio.h>
 #include <assert.h>
 #include <stdbool.h>
 #include "node.h"
 #define ll long long
-//Comparator for DFS (uncomment this and coment others)
-/*****************************************************************/
-/*
-bool node_comparator(node *a, node *b)
-{
-    // User puts in the node comparator here
-    return a->seen_time > b->seen_time; // A sample comparator
-}
-*/
-
-//Comparator for BFS (uncomment this and coment others)
-/*****************************************************************/
-
-bool node_comparator(node *a, node *b)
-{
-    // User puts in the node comparator here
-    return a->seen_time < b->seen_time; // A sample comparator
-}
-
-//Comparator for Greedy (uncomment this and coment others)
-/*****************************************************************/
-/*
-bool node_comparator(node *a, node *b)
-{
-    // User puts in the node comparator here
-    return a->value < b->value; // A sample comparator
-}
-*/
 
 void swap(node **a, node **b)
 {

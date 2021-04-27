@@ -4,11 +4,6 @@
 #include <limits.h>
 #include "node.h"
 
-void input_node(node *a)
-{
-    // inputs the information of one node. Use this in a loop to input all the nodes.
-    scanf("%d %d %d", &(a->state_number), &(a->value), &(a->parent));
-}
 void generateTree(Node *NodeArray, int N) //generates a tree out of the array of nodes
 {
     for (int i = 1; i < N; i++) //traverses through each node (other than root) and links it to its parent

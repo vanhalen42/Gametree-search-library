@@ -38,7 +38,10 @@ typedef struct node
 } node;
 
 typedef node *Node;
+
 bool node_comparator(node *a, node *b);
+void input_node(node *a);
+
 void generateTree(Node *NodeArray, int N); //generates a tree out of the array of nodes
 Node inputTree();                          //takes input from the user and returns a tree
 void printNode(Node TreeNode);             //prints the attributes of a node
