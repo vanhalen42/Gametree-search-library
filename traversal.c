@@ -20,14 +20,14 @@ bool isempty(node *priority_queue[], int n) //checks if the priority queue is em
     }
     return true;
 }
-void heapify(node **priority_queue, int i, int queue_size)
+void heapify(node **priority_queue, int i, int queue_size, char str[])
 {
     if ((i - 1) / 2 > 0)
     {
-        if (node_comparator(priority_queue[i], priority_queue[(i - 1) / 2]))
+        if (node_comparator(str, priority_queue[i], priority_queue[(i - 1) / 2]))
         {
             swap(&priority_queue[i], &priority_queue[(i - 1) / 2]);
-            heapify(priority_queue, (i - 1) / 2, queue_size);
+            heapify(priority_queue, (i - 1) / 2, queue_size, str);
             return;
         }
     }
@@ -35,31 +35,31 @@ void heapify(node **priority_queue, int i, int queue_size)
     {
         if (i * 2 + 2 >= queue_size)
         {
-            if (node_comparator(priority_queue[i * 2 + 1], priority_queue[i]))
+            if (node_comparator(str, priority_queue[i * 2 + 1], priority_queue[i]))
             {
                 swap(&priority_queue[i], &priority_queue[i * 2 + 1]);
-                heapify(priority_queue, i * 2 + 1, queue_size);
+                heapify(priority_queue, i * 2 + 1, queue_size, str);
                 return;
             }
         }
         else
         {
-            if (node_comparator(priority_queue[i * 2 + 1], priority_queue[i * 2 + 2]) && node_comparator(priority_queue[i * 2 + 1], priority_queue[i]))
+            if (node_comparator(str, priority_queue[i * 2 + 1], priority_queue[i * 2 + 2]) && node_comparator(str, priority_queue[i * 2 + 1], priority_queue[i]))
             {
                 swap(&priority_queue[i], &priority_queue[i * 2 + 1]);
-                heapify(priority_queue, i * 2 + 1, queue_size);
+                heapify(priority_queue, i * 2 + 1, queue_size, str);
                 return;
             }
-            else if (node_comparator(priority_queue[i * 2 + 2], priority_queue[i * 2 + 1]) && node_comparator(priority_queue[i * 2 + 2], priority_queue[i]))
+            else if (node_comparator(str, priority_queue[i * 2 + 2], priority_queue[i * 2 + 1]) && node_comparator(str, priority_queue[i * 2 + 2], priority_queue[i]))
             {
                 swap(&priority_queue[i], &priority_queue[i * 2 + 2]);
-                heapify(priority_queue, i * 2 + 2, queue_size);
+                heapify(priority_queue, i * 2 + 2, queue_size, str);
                 return;
             }
         }
     }
 }
-void traversing_algo(node *root, int n)
+void traversing_algo(node *root, int n, char str[])
 {
     // we make a priority queue of n pointers of type node *
     node **priority_queue = (node **)malloc(n * sizeof(node *));
@@ -88,7 +88,7 @@ void traversing_algo(node *root, int n)
             priority_queue[0]->children[i]->seen_time = seen_time;       //seen time of the child updated (will be used for comparators)
             seen_time++;
             queue_size++;
-            heapify(priority_queue, queue_size - 1, queue_size); //the ith child is added to its correct location in the priority queue using comparator
+            heapify(priority_queue, queue_size - 1, queue_size, str); //the ith child is added to its correct location in the priority queue using comparator
         }
         swap(&priority_queue[0], &priority_queue[queue_size - 1]); //pop the first element from the priority queue by swapping with last element
         printNode(priority_queue[queue_size - 1]);                 //print the first element which has now been moved to the last
@@ -100,7 +100,7 @@ void traversing_algo(node *root, int n)
         numberofelems++;
         priority_queue[queue_size - 1] = NULL;
         queue_size--;
-        heapify(priority_queue, 0, queue_size);
+        heapify(priority_queue, 0, queue_size, str);
     }
     free(priority_queue);
 }

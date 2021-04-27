@@ -39,7 +39,7 @@ typedef struct node
 
 typedef node *Node;
 
-bool node_comparator(node *a, node *b);
+bool node_comparator(char str[], node *a, node *b);
 void input_node(node *a);
 
 void generateTree(Node *NodeArray, int N); //generates a tree out of the array of nodes
@@ -51,8 +51,8 @@ void DeleteTree(Node TreeNode);            //Frees memory allocated to the tree
 
 void swap(node **a, node **b);
 bool isempty(node *priority_queue[], int n); //checks if the priority queue is empty(1) or not(0)
-void heapify(node **priority_queue, int i, int queue_size);
-void traversing_algo(node *root, int n);
+void heapify(node **priority_queue, int i, int queue_size, char str[]);
+void traversing_algo(node *root, int n, char str[]);
 void printTree2(Node TreeNode);
 void printNodenoice(Node TreeNode, int what_to_do[]);
 #endif

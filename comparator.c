@@ -1,34 +1,27 @@
 #include <stdio.h>
 #include <stdbool.h>
+#include <string.h>
 #include "node.h"
-//Comparator for DFS (uncomment this and coment others)
-/*****************************************************************/
-/*
-bool node_comparator(node *a, node *b)
-{
-    // User puts in the node comparator here
-    return a->seen_time > b->seen_time; // A sample comparator
-}
-*/
 
-//Comparator for BFS (uncomment this and coment others)
-/*****************************************************************/
 
-bool node_comparator(node *a, node *b)
-{
-    // User puts in the node comparator here
-    return a->seen_time < b->seen_time; // A sample comparator
-}
 
-//Comparator for Greedy (uncomment this and coment others)
-/*****************************************************************/
-/*
-bool node_comparator(node *a, node *b)
+bool node_comparator(char str[], node *a, node *b)
 {
-    // User puts in the node comparator here
-    return a->value < b->value; // A sample comparator
+    if (strcmp(str, "DFS") == 0)
+    {
+        return a->seen_time > b->seen_time;
+    }
+    else if (strcmp(str, "BFS") == 0)
+    {
+        return a->seen_time < b->seen_time;
+    }
+    else if (strcmp(str, "Greedy") == 0)
+    {
+        return a->value < b->value;
+    }
+    else
+        return a->seen_time > b->seen_time;
 }
-*/
 void input_node(node *a)
 {
     // inputs the information of one node. Use this in a loop to input all the nodes.
