@@ -89,6 +89,7 @@ void DeleteTree(Node TreeNode)
     {
         DeleteTree(TreeNode->children[i]);
     }
+    free(TreeNode);
 }
 
 void printTree2(Node TreeNode)
