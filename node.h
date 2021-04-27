@@ -21,7 +21,7 @@
 
 #include <stdio.h>
 #include <stdbool.h>
-int NoOfNodes;
+
 int maxdepth[10000];
 double avgdepth[10000];
 int bfactor[10000];
@@ -33,7 +33,7 @@ typedef struct node
     int parent;
 
     // You (as a developer) can add any extra information here [Will not be touched by user]
-    int depth, seen_time, number_of_children;
+    int depth, seen_time, number_of_children, NoOfNodes;
     struct node *children[10000];
 } node;
 

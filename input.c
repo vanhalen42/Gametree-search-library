@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
+#include <limits.h>
 #include "node.h"
 
 void input_node(node *a)
@@ -16,11 +17,13 @@ void generateTree(Node *NodeArray, int N) //generates a tree out of the array of
         Temp->children[Temp->number_of_children] = NodeArray[i];
         (Temp->number_of_children)++;
         NodeArray[i]->depth = Temp->depth + 1;
+        NodeArray[i]->NoOfNodes = INT_MIN;
     }
 }
 
 Node inputTree() //takes input from the user and returns a tree
 {
+    int NoOfNodes;
     scanf("%d", &NoOfNodes);
 
     Node *NodeArray = (Node *)malloc(NoOfNodes * sizeof(Node));
@@ -36,6 +39,7 @@ Node inputTree() //takes input from the user and returns a tree
 
     Node Root = NodeArray[0]; //initialises the first node as root of the tree
     Root->depth = 0;
+    Root->NoOfNodes = NoOfNodes;
     generateTree(NodeArray, NoOfNodes); //generates the required tree
     free(NodeArray);                    //??
     return Root;
