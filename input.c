@@ -110,6 +110,7 @@ void printNodenoice(Node TreeNode, int what_to_do[])
         if (i != TreeNode->number_of_children - 1)
         {
             printf("├─────");
+            what_to_do[TreeNode->depth] = 0;
         }
         else if (i == TreeNode->number_of_children - 1)
         {
