@@ -21,6 +21,7 @@
 
 #include <stdio.h>
 #include <stdbool.h>
+int NoOfNodes;
 int maxdepth[10000];
 double avgdepth[10000];
 int bfactor[10000];
@@ -47,5 +48,5 @@ bool isempty(node *priority_queue[], int n); //checks if the priority queue is e
 void heapify(node **priority_queue, int i, int queue_size);
 void traversing_algo(node *root, int n);
 
-void printNodenoice(Node TreNode);
+void printNodenoice(Node TreeNode);
 #endif

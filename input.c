@@ -21,7 +21,6 @@ void generateTree(Node *NodeArray, int N) //generates a tree out of the array of
 
 Node inputTree() //takes input from the user and returns a tree
 {
-    int NoOfNodes;
     scanf("%d", &NoOfNodes);
 
     Node *NodeArray = (Node *)malloc(NoOfNodes * sizeof(Node));
