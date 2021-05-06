@@ -56,6 +56,12 @@ void heapify(node **priority_queue, int i, int queue_size, char str[])
                 heapify(priority_queue, i * 2 + 2, queue_size, str);
                 return;
             }
+            else if (node_comparator(str, priority_queue[i * 2 + 1], priority_queue[i]))
+            {
+                swap(&priority_queue[i], &priority_queue[i * 2 + 1]);
+                heapify(priority_queue, i * 2 + 1, queue_size, str);
+                return;
+            }
         }
     }
 }
