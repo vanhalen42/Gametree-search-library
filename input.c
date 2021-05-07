@@ -2,7 +2,176 @@
 #include <stdlib.h>
 #include <assert.h>
 #include <limits.h>
+#include <math.h>
 #include "node.h"
+
+int checkRow(char ar[3][3], char ch)
+{
+    for(int i = 0 ; i < 3 ; i++)
+        if(ar[i][0] == ch && ar[i][1] == ch && ar[i][2] == ch)
+            return 1;
+    
+    return 0;
+}
+
+int checkColumn(char ar[3][3], char ch)
+{
+    for(int i = 0 ; i < 3 ; i++)
+        if(ar[0][i] == ch && ar[1][i] == ch && ar[2][i] == ch)
+            return 1;
+
+    return 0;
+}
+
+int checkDiagonal(char ar[3][3], char ch)
+{
+    if(ar[0][0] == ch && ar[1][1] == ch && ar[2][2] == ch)
+        return 1;
+    if(ar[0][2] == ch && ar[1][1] == ch && ar[2][0] == ch)
+        return 1;  
+
+    return 0;
+}
+
+int checkGameOver(Node GameNode)
+{
+    char temp;
+
+    if(GameNode->game_state == 'X')
+        temp = 'O';
+    else
+        temp = 'X';
+
+    if(checkRow(GameNode->TicTacToe,temp) == 1 || checkColumn(GameNode->TicTacToe,temp) == 1 || checkDiagonal(GameNode->TicTacToe,temp) == 1)
+        return 1;
+
+    for(int i = 0 ; i < 3 ; i++)
+        for(int j = 0 ; j < 3 ; j++)
+            if(GameNode->TicTacToe[i][j] == '-')
+                return 0;
+
+    return 2;    
+}
+
+int Symmetry(char ar[3][3])
+{
+    int sum = 0;
+    
+    if(ar[0][0] == ar[0][2] && ar[1][0] == ar[1][2] && ar[2][0] == ar[2][2])
+        sum += 1;
+    
+    if(ar[0][0] == ar[2][0] && ar[0][1] == ar[2][1] && ar[0][2] == ar[2][2])
+        sum += 2;
+
+    if(ar[0][1] == ar[1][0] && ar[0][2] == ar[2][0] && ar[1][2] == ar[2][1])
+        sum += 3;
+
+    if(ar[0][0] == ar[2][2] && ar[0][1] == ar[1][2] && ar[1][0] == ar[2][1])
+        sum += 4;
+
+    return sum;
+}
+
+void AddChild(Node GameNode, int x, int y)
+{
+    Node Child = (Node) malloc(sizeof(struct node));
+    assert(Child != NULL);
+
+    Child->number_of_children = 0;
+    Child->depth = GameNode->depth + 1;
+    for(int i = 0 ; i < 3 ; i++)        
+        for(int j = 0 ; j < 3 ; j++)
+            if(i == x && j == y)
+                Child->TicTacToe[i][j] = GameNode->game_state;
+            else    
+                Child->TicTacToe[i][j] = GameNode->TicTacToe[i][j];
+
+    if(GameNode->game_state == 'X')
+        Child->game_state = 'O';
+    else
+        Child->game_state = 'X';
+    
+    GameNode->children[GameNode->number_of_children] = Child;
+    GameNode->number_of_children++;
+}
+
+void generateGameTree(Node GameNode)
+{
+    if(checkGameOver(GameNode) != 0)
+        return;
+    
+    if(Symmetry(GameNode->TicTacToe) == 1)
+        for(int i = 0 ; i < 3 ; i++)
+            for(int j = 0 ; j < 2 ; j++)
+                if(GameNode->TicTacToe[i][j] == '-')
+                    AddChild(GameNode,i,j);
+
+    if(Symmetry(GameNode->TicTacToe) == 2)
+        for(int j = 0 ; j < 3 ; j++)
+            for(int i = 0 ; i < 2 ; i++)
+                if(GameNode->TicTacToe[i][j] == '-')
+                    AddChild(GameNode,i,j);
+
+    if(Symmetry(GameNode->TicTacToe) == 3)
+        for(int i = 0 ; i < 3 ; i++)
+            for(int j = 0 ; j < 3 ; j++)
+                if(j >= i && GameNode->TicTacToe[i][j] == '-')
+                    AddChild(GameNode,i,j);
+
+    if(Symmetry(GameNode->TicTacToe) == 4)
+        for(int i = 0 ; i < 3 ; i++)
+            for(int j = 0 ; j < 3 ; j++)
+                if(i + j <= 2 && GameNode->TicTacToe[i][j] == '-')
+                    AddChild(GameNode,i,j);
+    
+    if(Symmetry(GameNode->TicTacToe) == 10)
+    {
+        if(GameNode->TicTacToe[0][0] == '-')
+            AddChild(GameNode,0,0);
+        if(GameNode->TicTacToe[0][1] == '-')
+            AddChild(GameNode,0,1);
+        if(GameNode->TicTacToe[1][1] == '-')
+            AddChild(GameNode,1,1);
+    }
+
+    if(Symmetry(GameNode->TicTacToe) == 0)
+        for(int i = 0 ; i < 3 ; i++)
+            for(int j = 0 ; j < 3 ; j++)
+                if(GameNode->TicTacToe[i][j] == '-')
+                    AddChild(GameNode,i,j);
+
+    for(int i = 0 ; i < GameNode->number_of_children ; i++)
+    {
+        generateGameTree(GameNode->children[i]);
+    }
+}
+
+Node inputGameTree()
+{
+    Node Root = (Node) malloc(sizeof(struct node));
+    assert(Root != NULL);
+
+    Root->number_of_children = 0;
+    Root->game_state = 'O';
+    Root->depth = 0;
+
+    //uncomment the below snippet to generate complete game tree
+    //char ar[3][3] = {{'-','-','-'},
+    //                 {'-','-','-'},
+    //                 {'-','-','-'}};
+
+    //generates partial game tree with the following initial state
+    char ar[3][3] = {{'X','-','O'},
+                     {'-','O','-'},
+                     {'X','-','X'}};
+
+    for(int i = 0 ; i < 3 ; i++)
+        for(int j = 0 ; j < 3 ; j++)
+            Root->TicTacToe[i][j] = ar[i][j];
+
+    generateGameTree(Root);
+    return Root;
+}
 
 void generateTree(Node *NodeArray, int N) //generates a tree out of the array of nodes
 {
@@ -92,6 +261,7 @@ void printTree2(Node TreeNode)
     int a[100000] = {0};
     printNodenoice(TreeNode, a);
 }
+
 void printNodenoice(Node TreeNode, int what_to_do[])
 {
 
@@ -119,4 +289,51 @@ void printNodenoice(Node TreeNode, int what_to_do[])
         }
         printNodenoice(TreeNode->children[i], what_to_do);
     }
+}
+
+void printGameNodenoice(Node TreeNode, int what_to_do[])
+{
+
+    for(int i = 0 ; i < 3 ; i++)
+    {
+        for(int j = 0 ; j < 3 ; j++)
+            printf(" %c",TreeNode->TicTacToe[i][j]);
+        printf("\n");
+        for (int j = 0; j < TreeNode->depth; j++)
+        {
+            if (what_to_do[j])
+                printf("      ");
+            else
+                printf("│     ");
+        }
+    }
+    printf("\n");
+
+    for (int i = 0; i < TreeNode->number_of_children; i++)
+    {
+
+        for (int i = 0; i < TreeNode->depth; i++)
+        {
+            if (what_to_do[i])
+                printf("      ");
+            else
+                printf("│     ");
+        }
+        if (i != TreeNode->number_of_children - 1)
+        {
+            printf("├─────");
+            what_to_do[TreeNode->depth] = 0;
+        }
+        else if (i == TreeNode->number_of_children - 1)
+        {
+            printf("└─────");
+            what_to_do[TreeNode->depth] = 1;
+        }
+        printGameNodenoice(TreeNode->children[i], what_to_do);
+    }
+}
+void printTree3(Node TreeNode)
+{
+    int a[100000] = {0};
+    printGameNodenoice(TreeNode, a);
 }
