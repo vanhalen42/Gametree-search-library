@@ -421,7 +421,7 @@ Node inputGameTree()
 
     //generates partial game tree with the following initial state
     char ar[3][3] = {{'-', 'X', '-'},
-                     {'-', '-', '-'},
+                     {'-', 'O', '-'},
                      {'-', '-', '-'}};
 
     for (int i = 0; i < 3; i++)

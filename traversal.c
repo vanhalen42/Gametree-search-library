@@ -65,6 +65,19 @@ void heapify(node **priority_queue, int i, int queue_size, char str[])
         }
     }
 }
+int count(Node root)
+{
+    int sum = 0;
+    for (int i = 0; i < 3; i++)
+    {
+        for (int j = 0; j < 3; j++)
+        {
+            if (root->TicTacToe[i][j] == '-')
+                sum++;
+        }
+    }
+    return sum;
+}
 void traversing_algo(node *root, int n, char str[])
 {
     // we make a priority queue of n pointers of type node *
@@ -86,7 +99,7 @@ void traversing_algo(node *root, int n, char str[])
     // loop for traversal
     long int depths = 0;
     int numberofelems = 1;
-    while (!isempty(priority_queue, queue_size)) // while priority queue is not empty
+    while (!isempty(priority_queue, queue_size) && count(priority_queue[0]) != 0) // while priority queue is not empty
     {
         for (int i = 0; i < priority_queue[0]->number_of_children; i++)
         {
