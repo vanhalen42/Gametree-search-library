@@ -22,9 +22,9 @@
 #include <stdio.h>
 #include <stdbool.h>
 
-int maxdepth[10000];
-double avgdepth[10000];
-int bfactor[10000];
+int maxdepth[100000];
+double avgdepth[100000];
+int bfactor[100000];
 
 typedef struct node
 {
@@ -34,6 +34,7 @@ typedef struct node
 
     // You (as a developer) can add any extra information here [Will not be touched by user]
     int depth, seen_time, number_of_children, NoOfNodes;
+    int heuristic;
     char game_state,TicTacToe[3][3];
     struct node *children[10000];
 } node;

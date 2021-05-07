@@ -7,7 +7,7 @@
 #define ll long long
 int main(void)
 {
-    char str[]="DFS";
+    char str[] = "A* lite";
     //Node root = inputTree();                     // takes input the given format and allocates memory
     //printTree2(root);                            // (optional) uses same format as the tree command on bash to print the tree
     //traversing_algo(root, root->NoOfNodes, str); // runs the search algorithm based on the comparator
@@ -15,6 +15,7 @@ int main(void)
 
     Node root = inputGameTree();
     printTree3(root);
-    DeleteTree(root);                            
+    traversing_algo(root, 20, str);
+    DeleteTree(root);
     return 0;
 }
