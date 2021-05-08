@@ -224,13 +224,13 @@ void printNode(Node TreeNode) //prints the attributes of a node
 {
     printf("State Number: %d\n", TreeNode->state_number);
     printf("Value: %d\n", TreeNode->value);
-    // if (TreeNode->parent == -1)
-    //     printf("Parent: -\n");
-    // else
-    //     printf("Parent: %d\n", TreeNode->parent);
-    // printf("Depth: %d\n", TreeNode->depth);
-    // printf("Seen Time: %d\n", TreeNode->seen_time);
-    // printf("\nNumber of Children: %d\n", TreeNode->number_of_children);
+    if (TreeNode->parent == -1)
+        printf("Parent: -\n");
+    else
+        printf("Parent: %d\n", TreeNode->parent);
+    printf("Depth: %d\n", TreeNode->depth);
+    printf("Seen Time: %d\n", TreeNode->seen_time);
+    printf("\nNumber of Children: %d\n", TreeNode->number_of_children);
 
     if (TreeNode->number_of_children == 0)
     {
