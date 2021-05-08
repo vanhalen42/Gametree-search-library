@@ -9,7 +9,7 @@
 int main(void)
 {
 
-    char str[] = "DFS"; //str stors the string which decides which comparator to use
+    char str[] = "Greedy"; //str stors the string which decides which comparator to use
 
     //Sample code for normal tree
     Node root = inputTree();                     // takes input the given format and allocates memory
