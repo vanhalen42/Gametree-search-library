@@ -69,6 +69,8 @@ void traversing_algo(node *root, int n, char str[])
 {
     // we make a priority queue of n pointers of type node *
     node **priority_queue = (node **)malloc(n * sizeof(node *));
+    traversal_order = (Node *)malloc(n * sizeof(Node *));
+    int iteration = 0;
     assert(priority_queue != NULL);
 
     int queue_size = 0, seen_time = 0; // declaration and initialization of queue size and time as we go forward
@@ -97,8 +99,10 @@ void traversing_algo(node *root, int n, char str[])
             queue_size++;
             heapify(priority_queue, queue_size - 1, queue_size, str); //the ith child is added to its correct location in the priority queue using comparator
         }
-        swap(&priority_queue[0], &priority_queue[queue_size - 1]); //pop the first element from the priority queue by swapping with last element
-        printNode(priority_queue[queue_size - 1]);                 //print the first element which has now been moved to the last
+        swap(&priority_queue[0], &priority_queue[queue_size - 1]);   //pop the first element from the priority queue by swapping with last element
+        traversal_order[iteration] = priority_queue[queue_size - 1]; // Add the node pointer to the traversal order array
+        iteration++;
+        //printNode(priority_queue[queue_size - 1]);                 //print the first element which has now been moved to the last
         depths += priority_queue[queue_size - 1]->depth;
         maxdepth[maxdepthsize] = priority_queue[queue_size - 1]->depth; //max depth at each iteration
                                                                         // bfactor[maxdepthsize] = priority_queue[queue_size - 1]->number_of_children;
@@ -124,11 +128,17 @@ void traversing_algo(node *root, int n, char str[])
 }
 void printstats(int N) //prints the statistics avgdepth,maxdepth,maxchildren
 {
-
-    printf("\t    max-depth\taverage-depth\tmaxchildren\n");
+    assert(traversal_order != NULL);
+    assert(maxchildren != NULL);
+    assert(maxdepth != NULL);
+    assert(avgdepth != NULL);
+    printf("----------------------------------------------------------------------------------------------------\n");
+    printf("│ Iteration      │ State Number  │     Value     │   max-depth   │ average-depth   │  maxchildren  │\n");
+    printf("----------------------------------------------------------------------------------------------------\n");
     for (int i = 0; i < N; i++)
     {
 
-        printf("iteration:%d\t%d\t   %.2lf\t\t   %d\n", i + 1, maxdepth[i], avgdepth[i], maxchildren[i]);
+        printf("│%16d│%15d│%15d│%15d│%17.2lf│%15d│\n", i + 1, traversal_order[i]->state_number, traversal_order[i]->value, maxdepth[i], avgdepth[i], maxchildren[i]);
     }
+    printf("----------------------------------------------------------------------------------------------------\n");
 }

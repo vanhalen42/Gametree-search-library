@@ -7,11 +7,11 @@
 #define ll long long
 int main(void)
 {//comment added second time
-    char str[]="BFS";
+    char str[]="DFS";
     Node root = inputTree();                     // takes input the given format and allocates memory
     printTree2(root);                            // (optional) uses same format as the tree command on bash to print the tree
     traversing_algo(root, root->NoOfNodes, str); // runs the search algorithm based on the comparator
-    printstats(17);
+    printstats(root->NoOfNodes);
     
     //DeleteTree(root);                            // frees the memory of the tree
 

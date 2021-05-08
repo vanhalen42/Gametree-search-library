@@ -18,15 +18,12 @@
     For now, write the main function and input the nodes, fill the values of number_of_children, children
     (in the struct) and try to write the priority queue using the comparator.
 */
-
+#include <stdlib.h>
 #include <stdio.h>
+#include <assert.h>
+#include <string.h>
 #include <stdbool.h>
-
-int *maxdepth;
-double *avgdepth;
-//int bfactor[10000];
-int *maxchildren;
-
+#include <string.h>
 typedef struct node
 {
     int state_number;
@@ -40,8 +37,13 @@ typedef struct node
     struct node *linktoparent;   //links the node to its parent
     int numberofchildrenvisited; //number of children of the node visited during the search
 } node;
-
 typedef node *Node;
+
+int *maxdepth;
+double *avgdepth;
+//int bfactor[10000];
+int *maxchildren;
+Node *traversal_order;
 
 bool node_comparator(char str[], node *a, node *b);
 void input_node(node *a);
