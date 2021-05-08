@@ -6,7 +6,7 @@
 #include "node.h"
 #define ll long long
 int main(void)
-{//comment added
+{//comment added second time
     char str[]="BFS";
     Node root = inputTree();                     // takes input the given format and allocates memory
     printTree2(root);                            // (optional) uses same format as the tree command on bash to print the tree
