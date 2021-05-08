@@ -14,7 +14,7 @@ int main(void)
     //DeleteTree(root);                            // frees the memory of the tree
 
     Node root = inputGameTree();
-    printTree3(root);
+    // printTree3(root);
     traversing_algo(root, 20, str);
     DeleteTree(root);
     return 0;

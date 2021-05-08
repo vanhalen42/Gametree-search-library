@@ -29,7 +29,7 @@ bool node_comparator(char str[], node *a, node *b)
                 return 0;
         }
         else
-            return a->depth > b->depth;
+            return a->seen_time > b->seen_time;
     }
     else
         return a->seen_time > b->seen_time;

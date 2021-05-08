@@ -99,7 +99,7 @@ void traversing_algo(node *root, int n, char str[])
     // loop for traversal
     long int depths = 0;
     int numberofelems = 1;
-    while (!isempty(priority_queue, queue_size) && count(priority_queue[0]) != 0) // while priority queue is not empty
+    while (!isempty(priority_queue, queue_size)) // while priority queue is not empty
     {
         for (int i = 0; i < priority_queue[0]->number_of_children; i++)
         {
@@ -111,6 +111,12 @@ void traversing_algo(node *root, int n, char str[])
         }
         swap(&priority_queue[0], &priority_queue[queue_size - 1]); //pop the first element from the priority queue by swapping with last element
         printNode(priority_queue[queue_size - 1]);                 //print the first element which has now been moved to the last
+        if (count(priority_queue[queue_size - 1]) == 0)
+        {
+            printf("\nxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\n");
+            printf("Game Ends Here. Alternate appreaches can be seen below :\n");
+            printf("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\n");
+        }
         depths += priority_queue[queue_size - 1]->depth;
         maxdepth[maxdepthsize] = priority_queue[queue_size - 1]->depth;
         bfactor[maxdepthsize] = priority_queue[queue_size - 1]->number_of_children;

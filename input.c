@@ -352,8 +352,6 @@ void generateGameTree(Node GameNode)
     GameNode->heuristic = calc_heuristic(GameNode->TicTacToe, GameNode->game_state);
     if (checkGameOver(GameNode) != 0)
         return;
-
-    GameNode->heuristic = calc_heuristic(GameNode->TicTacToe, GameNode->game_state);
     if (Symmetry(GameNode->TicTacToe) == 1)
         for (int i = 0; i < 3; i++)
             for (int j = 0; j < 2; j++)
@@ -411,7 +409,7 @@ Node inputGameTree()
     assert(Root != NULL);
 
     Root->number_of_children = 0;
-    Root->game_state = 'O';
+    Root->game_state = 'X';
     Root->depth = 0;
 
     //uncomment the below snippet to generate complete game tree
