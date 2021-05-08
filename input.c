@@ -145,7 +145,14 @@ void generateGameTree(Node GameNode)
         generateGameTree(GameNode->children[i]);
     }
 }
-
+int calc_num_nodes(Node Game_tree)
+{
+    int num = 0;
+    num += Game_tree->number_of_children;
+    for (int i = 0; i < Game_tree->number_of_children; i++)
+        num += calc_num_nodes(Game_tree->children[i]);
+    return num;
+}
 Node inputGameTree()
 {
     Node Root = (Node)malloc(sizeof(struct node));
@@ -156,7 +163,7 @@ Node inputGameTree()
     Root->depth = 0;
 
     //uncomment the below snippet to generate complete game tree
-    //char ar[3][3] = {{'-','-','-'},
+    // char ar[3][3] = {{'-','-','-'},
     //                 {'-','-','-'},
     //                 {'-','-','-'}};
 
@@ -170,6 +177,7 @@ Node inputGameTree()
             Root->TicTacToe[i][j] = ar[i][j];
 
     generateGameTree(Root);
+    Root->NoOfNodes = calc_num_nodes(Root);
     return Root;
 }
 
@@ -208,15 +216,7 @@ Node inputTree() //takes input from the user and returns a tree
     Root->NoOfNodes = NoOfNodes;
     Root->linktoparent = NULL;
     generateTree(NodeArray, NoOfNodes); //generates the required tree
-    free(NodeArray);                    //??
-
-    maxdepth = (int *)malloc(sizeof(int) * NoOfNodes);
-    assert(maxdepth != NULL);
-    avgdepth = (double *)malloc(sizeof(double) * NoOfNodes);
-    assert(avgdepth != NULL);
-    maxchildren = (int *)malloc(sizeof(int) * NoOfNodes);
-    assert(maxchildren != NULL);
-
+    free(NodeArray);
     return Root;
 }
 
@@ -356,4 +356,40 @@ void free_memory_alloc_stats()
     free(maxchildren);
     free(avgdepth);
     return;
+}
+void Print_Game_Node(Node p)
+{
+    int count = 0;
+    for (int i = 0; i < 3; i++)
+    {
+        for (int j = 0; j < 3; j++)
+        {
+            printf("%c ", p->TicTacToe[i][j]);
+            if (p->TicTacToe[i][j] == '-')
+                count++;
+        }
+        if (i == 0)
+
+            printf("\t Turn  : %c\n", p->game_state);
+
+        else if (i == 1)
+            printf("\t Depth : %d\n", p->depth);
+        else
+            printf("\n");
+    }
+    printf("-----------------------\n");
+    if (checkGameOver(p))
+    {
+        printf("-----------------------\n");
+        printf("GAME OVER.\nATERNATE PATHS CAN BE\nSEEN BELOW. \n");
+        printf("-----------------------\n\n\n");
+        printf("-----------------------\n");
+    }
+    else
+    {
+        printf("          |          \n");
+        printf("          |          \n");
+        printf("          V         \n");
+        printf("-----------------------\n");
+    }
 }
