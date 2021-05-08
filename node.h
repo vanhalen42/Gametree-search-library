@@ -22,9 +22,10 @@
 #include <stdio.h>
 #include <stdbool.h>
 
-int maxdepth[10000];
-double avgdepth[10000];
-int bfactor[10000];
+int *maxdepth;
+double *avgdepth;
+//int bfactor[10000];
+int *maxchildren;
 
 typedef struct node
 {
@@ -34,8 +35,10 @@ typedef struct node
 
     // You (as a developer) can add any extra information here [Will not be touched by user]
     int depth, seen_time, number_of_children, NoOfNodes;
-    char game_state,TicTacToe[3][3];
+    char game_state, TicTacToe[3][3];
     struct node *children[10000];
+    struct node *linktoparent;   //links the node to its parent
+    int numberofchildrenvisited; //number of children of the node visited during the search
 } node;
 
 typedef node *Node;
@@ -60,4 +63,6 @@ void heapify(node **priority_queue, int i, int queue_size, char str[]);
 void traversing_algo(node *root, int n, char str[]);
 void printTree2(Node TreeNode);
 void printNodenoice(Node TreeNode, int what_to_do[]);
+void printstats(int N);
+void free_memory_alloc_stats();
 #endif

@@ -84,8 +84,9 @@ void traversing_algo(node *root, int n, char str[])
     queue_size++;
     int maxdepthsize = 0;
     // loop for traversal
-    long int depths = 0;
+    long int depths = 0; //keeps track of depth
     int numberofelems = 1;
+    int trackchildren = 0;                       //keeps track of maxchildren
     while (!isempty(priority_queue, queue_size)) // while priority queue is not empty
     {
         for (int i = 0; i < priority_queue[0]->number_of_children; i++)
@@ -99,14 +100,35 @@ void traversing_algo(node *root, int n, char str[])
         swap(&priority_queue[0], &priority_queue[queue_size - 1]); //pop the first element from the priority queue by swapping with last element
         printNode(priority_queue[queue_size - 1]);                 //print the first element which has now been moved to the last
         depths += priority_queue[queue_size - 1]->depth;
-        maxdepth[maxdepthsize] = priority_queue[queue_size - 1]->depth;
-        bfactor[maxdepthsize] = priority_queue[queue_size - 1]->number_of_children;
+        maxdepth[maxdepthsize] = priority_queue[queue_size - 1]->depth; //max depth at each iteration
+                                                                        // bfactor[maxdepthsize] = priority_queue[queue_size - 1]->number_of_children;
+        if (priority_queue[queue_size - 1]->linktoparent != NULL)       //max children at each iteration
+        {
+
+            priority_queue[queue_size - 1]->linktoparent->numberofchildrenvisited++;
+
+            if (trackchildren < priority_queue[queue_size - 1]->linktoparent->numberofchildrenvisited)
+                trackchildren = priority_queue[queue_size - 1]->linktoparent->numberofchildrenvisited;
+        }
+        maxchildren[maxdepthsize] = trackchildren;
+
         maxdepthsize++;
-        avgdepth[numberofelems - 1] = (double)depths / numberofelems;
+        avgdepth[numberofelems - 1] = (double)depths / numberofelems; //avg depth at each iteration
         numberofelems++;
+
         priority_queue[queue_size - 1] = NULL;
         queue_size--;
         heapify(priority_queue, 0, queue_size, str);
     }
     free(priority_queue);
+}
+void printstats(int N) //prints the statistics avgdepth,maxdepth,maxchildren
+{
+
+    printf("\t    max-depth\taverage-depth\tmaxchildren\n");
+    for (int i = 0; i < N; i++)
+    {
+
+        printf("iteration:%d\t%d\t   %.2lf\t\t   %d\n", i + 1, maxdepth[i], avgdepth[i], maxchildren[i]);
+    }
 }
