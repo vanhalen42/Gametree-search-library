@@ -99,6 +99,7 @@ void traversing_algo(node *root, int n, char str[])
     int maxdepthsize = 0;
     // loop for traversal
     long int depths = 0; //keeps track of depth
+    long int average_depth = 0;
     int numberofelems = 1;
     int trackchildren = 0;                       //keeps track of maxchildren
     while (!isempty(priority_queue, queue_size)) // while priority queue is not empty
@@ -115,6 +116,7 @@ void traversing_algo(node *root, int n, char str[])
         traversal_order[iteration] = priority_queue[queue_size - 1]; // Add the node pointer to the traversal order array
         iteration++;
         //printNode(priority_queue[queue_size - 1]);                 //print the first element which has now been moved to the last
+        average_depth += priority_queue[queue_size - 1]->depth;
         depths = max(depths, priority_queue[queue_size - 1]->depth);
         maxdepth[maxdepthsize] = depths;                          //max depth at each iteration
                                                                   // bfactor[maxdepthsize] = priority_queue[queue_size - 1]->number_of_children;
@@ -129,7 +131,7 @@ void traversing_algo(node *root, int n, char str[])
         maxchildren[maxdepthsize] = trackchildren;
 
         maxdepthsize++;
-        avgdepth[numberofelems - 1] = (double)depths / numberofelems; //avg depth at each iteration
+        avgdepth[numberofelems - 1] = (double)average_depth / numberofelems; //avg depth at each iteration
         numberofelems++;
 
         priority_queue[queue_size - 1] = NULL;
