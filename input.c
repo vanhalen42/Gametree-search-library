@@ -124,7 +124,6 @@ int calc_heuristic(char a[3][3], char state)
             else if (O_count > 1 && X_count == 0)
             {
                 val = -50;
-                return val;
             }
             else if (O_count == 0)
                 val += X_count;
@@ -155,7 +154,6 @@ int calc_heuristic(char a[3][3], char state)
             else if (O_count > 1 && X_count == 0)
             {
                 val = -50;
-                return val;
             }
             else if (O_count == 0)
                 val += X_count;
@@ -181,15 +179,9 @@ int calc_heuristic(char a[3][3], char state)
             val = 50;
             return val;
         }
-        else if (X_count == 3)
-        {
-            val = 50;
-            return val;
-        }
         else if (O_count > 1 && X_count == 0)
         {
             val = -50;
-            return val;
         }
         else if (O_count == 0)
             val += X_count;
@@ -217,7 +209,6 @@ int calc_heuristic(char a[3][3], char state)
         else if (O_count > 1 && X_count == 0)
         {
             val = -50;
-            return val;
         }
         else if (O_count == 0)
             val += X_count;
@@ -250,7 +241,6 @@ int calc_heuristic(char a[3][3], char state)
             else if (X_count > 1 && O_count == 0)
             {
                 val = 50;
-                return val;
             }
             else if (O_count == 0)
                 val += X_count + 1;
@@ -281,7 +271,6 @@ int calc_heuristic(char a[3][3], char state)
             else if (X_count > 1 && O_count == 0)
             {
                 val = 50;
-                return val;
             }
             else if (O_count == 0)
                 val += X_count + 1;
@@ -310,7 +299,6 @@ int calc_heuristic(char a[3][3], char state)
         else if (X_count > 1 && O_count == 0)
         {
             val = 50;
-            return val;
         }
         else if (O_count == 0)
             val += X_count + 1;
@@ -338,7 +326,6 @@ int calc_heuristic(char a[3][3], char state)
         else if (X_count > 1 && O_count == 0)
         {
             val = 50;
-            return val;
         }
         else if (O_count == 0)
             val += X_count + 1;
@@ -400,7 +387,7 @@ void generateGameTree(Node GameNode)
 }
 int calc_num_nodes(Node Game_tree)
 {
-    int num = 0;
+    int num = 1;
     num += Game_tree->number_of_children;
     for (int i = 0; i < Game_tree->number_of_children; i++)
         num += calc_num_nodes(Game_tree->children[i]);
