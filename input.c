@@ -337,6 +337,7 @@ int calc_heuristic(char a[3][3], char state)
 void generateGameTree(Node GameNode)
 {
     GameNode->heuristic = calc_heuristic(GameNode->TicTacToe, GameNode->game_state);
+    GameNode->linktoparent = NULL;
     if (checkGameOver(GameNode) != 0)
         return;
 
@@ -388,7 +389,6 @@ void generateGameTree(Node GameNode)
 int calc_num_nodes(Node Game_tree)
 {
     int num = 1;
-    num += Game_tree->number_of_children;
     for (int i = 0; i < Game_tree->number_of_children; i++)
         num += calc_num_nodes(Game_tree->children[i]);
     return num;
