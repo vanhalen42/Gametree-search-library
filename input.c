@@ -94,9 +94,262 @@ void AddChild(Node GameNode, int x, int y)
     GameNode->children[GameNode->number_of_children] = Child;
     GameNode->number_of_children++;
 }
-
+int calc_heuristic(char a[3][3], char state)
+{
+    int val = 0;
+    int X_count = 0, O_count = 0, dash_count = 0;
+    if (state == 'O')
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            X_count = 0;
+            O_count = 0;
+            dash_count = 0;
+            for (int j = 0; j < 3; j++)
+            {
+                if (a[i][j] == 'X')
+                    X_count++;
+                else if (a[i][j] == 'O')
+                    O_count++;
+                else if (a[i][j] == '-')
+                    dash_count++;
+            }
+            if (dash_count == 3)
+                val -= 1;
+            else if (X_count == 3)
+            {
+                val = 50;
+                return val;
+            }
+            else if (O_count > 1 && X_count == 0)
+            {
+                val = -50;
+                return val;
+            }
+            else if (O_count == 0)
+                val += X_count;
+            else if (X_count == 0)
+                val -= O_count + 1;
+        }
+        for (int i = 0; i < 3; i++)
+        {
+            X_count = 0;
+            O_count = 0;
+            dash_count = 0;
+            for (int j = 0; j < 3; j++)
+            {
+                if (a[j][i] == 'X')
+                    X_count++;
+                else if (a[j][i] == 'O')
+                    O_count++;
+                else if (a[j][i] == '-')
+                    dash_count++;
+            }
+            if (dash_count == 3)
+                val -= 1;
+            else if (X_count == 3)
+            {
+                val = 50;
+                return val;
+            }
+            else if (O_count > 1 && X_count == 0)
+            {
+                val = -50;
+                return val;
+            }
+            else if (O_count == 0)
+                val += X_count;
+            else if (X_count == 0)
+                val -= O_count + 1;
+        }
+        X_count = 0;
+        O_count = 0;
+        dash_count = 0;
+        for (int j = 0; j < 3; j++)
+        {
+            if (a[j][j] == 'X')
+                X_count++;
+            else if (a[j][j] == 'O')
+                O_count++;
+            else if (a[j][j] == '-')
+                dash_count++;
+        }
+        if (dash_count == 3)
+            val -= 1;
+        else if (X_count == 3)
+        {
+            val = 50;
+            return val;
+        }
+        else if (X_count == 3)
+        {
+            val = 50;
+            return val;
+        }
+        else if (O_count > 1 && X_count == 0)
+        {
+            val = -50;
+            return val;
+        }
+        else if (O_count == 0)
+            val += X_count;
+        else if (X_count == 0)
+            val -= O_count + 1;
+        X_count = 0;
+        O_count = 0;
+        dash_count = 0;
+        for (int j = 0; j < 3; j++)
+        {
+            if (a[j][3 - j - 1] == 'X')
+                X_count++;
+            else if (a[j][3 - j - 1] == 'O')
+                O_count++;
+            else if (a[j][3 - j - 1] == '-')
+                dash_count++;
+        }
+        if (dash_count == 3)
+            val -= 1;
+        else if (X_count == 3)
+        {
+            val = 50;
+            return val;
+        }
+        else if (O_count > 1 && X_count == 0)
+        {
+            val = -50;
+            return val;
+        }
+        else if (O_count == 0)
+            val += X_count;
+        else if (X_count == 0)
+            val -= O_count + 1;
+    }
+    else if (state == 'X')
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            X_count = 0;
+            O_count = 0;
+            dash_count = 0;
+            for (int j = 0; j < 3; j++)
+            {
+                if (a[i][j] == 'X')
+                    X_count++;
+                else if (a[i][j] == 'O')
+                    O_count++;
+                else if (a[i][j] == '-')
+                    dash_count++;
+            }
+            if (dash_count == 3)
+                val += 1;
+            else if (O_count == 3)
+            {
+                val = -50;
+                return val;
+            }
+            else if (X_count > 1 && O_count == 0)
+            {
+                val = 50;
+                return val;
+            }
+            else if (O_count == 0)
+                val += X_count + 1;
+            else if (X_count == 0)
+                val -= O_count;
+        }
+        for (int i = 0; i < 3; i++)
+        {
+            X_count = 0;
+            O_count = 0;
+            dash_count = 0;
+            for (int j = 0; j < 3; j++)
+            {
+                if (a[j][i] == 'X')
+                    X_count++;
+                else if (a[j][i] == 'O')
+                    O_count++;
+                else if (a[j][i] == '-')
+                    dash_count++;
+            }
+            if (dash_count == 3)
+                val += 1;
+            else if (O_count == 3)
+            {
+                val = -50;
+                return val;
+            }
+            else if (X_count > 1 && O_count == 0)
+            {
+                val = 50;
+                return val;
+            }
+            else if (O_count == 0)
+                val += X_count + 1;
+            else if (X_count == 0)
+                val -= O_count;
+        }
+        X_count = 0;
+        O_count = 0;
+        dash_count = 0;
+        for (int j = 0; j < 3; j++)
+        {
+            if (a[j][j] == 'X')
+                X_count++;
+            else if (a[j][j] == 'O')
+                O_count++;
+            else if (a[j][j] == '-')
+                dash_count++;
+        }
+        if (dash_count == 3)
+            val += 1;
+        else if (O_count == 3)
+        {
+            val = -50;
+            return val;
+        }
+        else if (X_count > 1 && O_count == 0)
+        {
+            val = 50;
+            return val;
+        }
+        else if (O_count == 0)
+            val += X_count + 1;
+        else if (X_count == 0)
+            val -= O_count;
+        X_count = 0;
+        O_count = 0;
+        dash_count = 0;
+        for (int j = 0; j < 3; j++)
+        {
+            if (a[j][3 - j - 1] == 'X')
+                X_count++;
+            else if (a[j][3 - j - 1] == 'O')
+                O_count++;
+            else if (a[j][3 - j - 1] == '-')
+                dash_count++;
+        }
+        if (dash_count == 3)
+            val += 1;
+        else if (O_count == 3)
+        {
+            val = -50;
+            return val;
+        }
+        else if (X_count > 1 && O_count == 0)
+        {
+            val = 50;
+            return val;
+        }
+        else if (O_count == 0)
+            val += X_count + 1;
+        else if (X_count == 0)
+            val -= O_count;
+    }
+    return val;
+}
 void generateGameTree(Node GameNode)
 {
+    GameNode->heuristic = calc_heuristic(GameNode->TicTacToe, GameNode->game_state);
     if (checkGameOver(GameNode) != 0)
         return;
 
@@ -370,20 +623,20 @@ void Print_Game_Node(Node p)
         }
         if (i == 0)
 
-            printf("\t Turn  : %c\n", p->game_state);
+            printf("\t %c's Turn \n", p->game_state);
 
         else if (i == 1)
-            printf("\t Depth : %d\n", p->depth);
+            printf("\t Heuristic : %d\n", p->heuristic);
         else
             printf("\n");
     }
     printf("-----------------------\n");
     if (checkGameOver(p))
     {
-        printf("-----------------------\n");
+        printf("=======================\n");
         printf("GAME OVER.\nATERNATE PATHS CAN BE\nSEEN BELOW. \n");
-        printf("-----------------------\n\n\n");
-        printf("-----------------------\n");
+        printf("=======================\n\n\n");
+        printf("=======================\n");
     }
     else
     {

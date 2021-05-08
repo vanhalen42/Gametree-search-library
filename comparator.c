@@ -3,8 +3,6 @@
 #include <string.h>
 #include "node.h"
 
-
-
 bool node_comparator(char str[], node *a, node *b)
 {
     if (strcmp(str, "DFS") == 0)
@@ -18,6 +16,20 @@ bool node_comparator(char str[], node *a, node *b)
     else if (strcmp(str, "Greedy") == 0)
     {
         return a->value < b->value;
+    }
+    else if (strcmp(str, "A* lite") == 0)
+    {
+        if (a->depth == b->depth)
+        {
+            if (a->game_state == b->game_state && a->game_state == 'X')
+                return a->heuristic < b->heuristic;
+            else if (a->game_state == b->game_state && a->game_state == 'O')
+                return a->heuristic > b->heuristic;
+            else
+                return 0;
+        }
+        else
+            return a->seen_time > b->seen_time;
     }
     else
         return a->seen_time > b->seen_time;

@@ -35,6 +35,7 @@ typedef struct node
     char game_state, TicTacToe[3][3];
     struct node *children[10000];
     struct node *linktoparent;   //links the node to its parent
+    int heuristic;               //used for the game tree. stores a parameter that gives the closeness to end of game
     int numberofchildrenvisited; //number of children of the node visited during the search
 } node;
 typedef node *Node;
