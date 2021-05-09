@@ -32,7 +32,8 @@ typedef struct node
 
     // You (as a developer) can add any extra information here [Will not be touched by user]
     int depth, seen_time, number_of_children, NoOfNodes;
-    char game_state, TicTacToe[3][3];
+    char game_state;              //
+    char TicTacToe[3][3];        //
     struct node *children[10000];
     struct node *linktoparent;   //links the node to its parent
     int heuristic;               //used for the game tree. stores a parameter that gives the closeness to end of game
@@ -59,6 +60,10 @@ void DeleteTree(Node TreeNode);            //Frees memory allocated to the tree
 Node inputGameTree();
 void generateGameTree(Node GameNode);
 void printTree3(Node GameNode);
+int calc_num_nodes(Node Game_tree);
+void Print_Game_Node(Node p);
+int checkGameOver(Node GameNode);
+int Symmetry(char ar[3][3]);
 
 void swap(node **a, node **b);
 bool isempty(node *priority_queue[], int n); //checks if the priority queue is empty(1) or not(0)

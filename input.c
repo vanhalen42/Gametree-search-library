@@ -5,7 +5,7 @@
 #include <math.h>
 #include "node.h"
 
-int checkRow(char ar[3][3], char ch)
+int checkRow(char ar[3][3], char ch)        //checks if any row of the matrix is filled
 {
     for (int i = 0; i < 3; i++)
         if (ar[i][0] == ch && ar[i][1] == ch && ar[i][2] == ch)
@@ -14,7 +14,7 @@ int checkRow(char ar[3][3], char ch)
     return 0;
 }
 
-int checkColumn(char ar[3][3], char ch)
+int checkColumn(char ar[3][3], char ch)     //checks if any column of the matrix is filled
 {
     for (int i = 0; i < 3; i++)
         if (ar[0][i] == ch && ar[1][i] == ch && ar[2][i] == ch)
@@ -23,7 +23,7 @@ int checkColumn(char ar[3][3], char ch)
     return 0;
 }
 
-int checkDiagonal(char ar[3][3], char ch)
+int checkDiagonal(char ar[3][3], char ch)       //checks if any diagonal of the matrix is filled
 {
     if (ar[0][0] == ch && ar[1][1] == ch && ar[2][2] == ch)
         return 1;
@@ -33,7 +33,7 @@ int checkDiagonal(char ar[3][3], char ch)
     return 0;
 }
 
-int checkGameOver(Node GameNode)
+int checkGameOver(Node GameNode)        //return the state of the game at any instance i.e. win, tie, loss or still in play
 {
     char temp;
 
@@ -53,7 +53,7 @@ int checkGameOver(Node GameNode)
     return 2;
 }
 
-int Symmetry(char ar[3][3])
+int Symmetry(char ar[3][3])         //checks if a 3x3 matrix is Singly Symmetric, Doubly Symmetric, Quadrapuly Symmetric or Non-Symmetric
 {
     int sum = 0;
 
@@ -72,7 +72,7 @@ int Symmetry(char ar[3][3])
     return sum;
 }
 
-void AddChild(Node GameNode, int x, int y)
+void AddChild(Node GameNode, int x, int y)      //Adds a child to a given node in a Tic-Tac-Toe game tree
 {
     Node Child = (Node)malloc(sizeof(struct node));
     assert(Child != NULL);
@@ -94,7 +94,8 @@ void AddChild(Node GameNode, int x, int y)
     GameNode->children[GameNode->number_of_children] = Child;
     GameNode->number_of_children++;
 }
-int calc_heuristic(char a[3][3], char state)
+
+int calc_heuristic(char a[3][3], char state)        //calculates the heuristic parameter for a given state in Tic-Tac-Toe
 {
     int val = 0;
     int X_count = 0, O_count = 0, dash_count = 0;
@@ -334,42 +335,53 @@ int calc_heuristic(char a[3][3], char state)
     }
     return val;
 }
-void generateGameTree(Node GameNode)
+
+void generateGameTree(Node GameNode)        //generates a game tree for a given turn based game (here Tic-Tac-Toe in particular)
 {
     GameNode->heuristic = calc_heuristic(GameNode->TicTacToe, GameNode->game_state);
     GameNode->linktoparent = NULL;
     if (checkGameOver(GameNode) != 0)
         return;
 
-    if (Symmetry(GameNode->TicTacToe) == 1)
-        for (int i = 0; i < 3; i++)
+    if (Symmetry(GameNode->TicTacToe) == 1)     //checks for vertical symmetry
+        for (int i = 0; i < 3; i++)             //traverses only through left half of the matrix to account for rotational symmetry
             for (int j = 0; j < 2; j++)
-                if (GameNode->TicTacToe[i][j] == '-')
+                if (GameNode->TicTacToe[i][j] == '-')   //if the cell is empty a move is possible
                     AddChild(GameNode, i, j);
 
-    if (Symmetry(GameNode->TicTacToe) == 2)
+    if (Symmetry(GameNode->TicTacToe) == 2)     //checks for horizontal symmetry
+    {                                           //traverses only through upper half of the matrix to account for rotational symmetry
         for (int j = 0; j < 3; j++)
             for (int i = 0; i < 2; i++)
-                if (GameNode->TicTacToe[i][j] == '-')
+                if (GameNode->TicTacToe[i][j] == '-')   // ^^
                     AddChild(GameNode, i, j);
+    }
 
-    if (Symmetry(GameNode->TicTacToe) == 3)
+    if (Symmetry(GameNode->TicTacToe) == 3)     //checks for diagonal symmetry
+    {                                           //traverses only through upper left diagonal triangle of the matrix to account for rotational symmetry
         for (int i = 0; i < 3; i++)
             for (int j = 0; j < 3; j++)
-                if (j >= i && GameNode->TicTacToe[i][j] == '-')
+                if (j >= i && GameNode->TicTacToe[i][j] == '-')     // ^^
                     AddChild(GameNode, i, j);
+    }
 
-    if (Symmetry(GameNode->TicTacToe) == 4)
+    if (Symmetry(GameNode->TicTacToe) == 4)     //checks for cross diagonal symmetry
+    {                                           //traverses only through upper right diagonal triangle of the matrix to account for rotational symmetry
         for (int i = 0; i < 3; i++)
             for (int j = 0; j < 3; j++)
-                if (i + j <= 2 && GameNode->TicTacToe[i][j] == '-')
+                if (i + j <= 2 && GameNode->TicTacToe[i][j] == '-')     // ^^
                     AddChild(GameNode, i, j);
-    if (Symmetry(GameNode->TicTacToe) == 7)
+    }
+    
+    if (Symmetry(GameNode->TicTacToe) == 7)     //checks for bi-diagonal symmetry
+    {                                           //traverses only through upper row of the matrix to account for rotational symmetry
         for (int i = 0; i < 3; i++)
             if (GameNode->TicTacToe[0][i] == '-')
                 AddChild(GameNode, 0, i);
-    if (Symmetry(GameNode->TicTacToe) == 10)
-    {
+    }
+    
+    if (Symmetry(GameNode->TicTacToe) == 10)    //checks for 4-directional symmetry
+    {                                           //traverses only through upper right triangle of the matrix to account for rotational symmetry
         if (GameNode->TicTacToe[0][0] == '-')
             AddChild(GameNode, 0, 0);
         if (GameNode->TicTacToe[0][1] == '-')
@@ -377,53 +389,25 @@ void generateGameTree(Node GameNode)
         if (GameNode->TicTacToe[1][1] == '-')
             AddChild(GameNode, 1, 1);
     }
-    // if (Symmetry(GameNode->TicTacToe) == 0)
-    else
-    {
-        for (int i = 0; i < 3; i++)
+   
+    if (Symmetry(GameNode->TicTacToe) == 0)     //Matrix is Non-Symmetric
+        for (int i = 0; i < 3; i++)             //traverses through the entire matrix
             for (int j = 0; j < 3; j++)
                 if (GameNode->TicTacToe[i][j] == '-')
-                    AddChild(GameNode, i, j);
-    }
-
-    for (int i = 0; i < GameNode->number_of_children; i++)
+                    AddChild(GameNode, i, j);                                       
+                                        
+    for (int i = 0; i < GameNode->number_of_children; i++)      //generates subtree for each of its children
     {
         generateGameTree(GameNode->children[i]);
     }
 }
-int calc_num_nodes(Node Game_tree)
+
+int calc_num_nodes(Node Game_tree)      //calculates the number of nodes in a game tree
 {
     int num = 1;
     for (int i = 0; i < Game_tree->number_of_children; i++)
         num += calc_num_nodes(Game_tree->children[i]);
     return num;
-}
-Node inputGameTree()
-{
-    Node Root = (Node)malloc(sizeof(struct node));
-    assert(Root != NULL);
-
-    Root->number_of_children = 0;
-    Root->game_state = 'X';
-    Root->depth = 0;
-
-    //uncomment the below snippet to generate complete game tree
-    // char ar[3][3] = {{'-', '-', '-'},
-    //                  {'-', '-', '-'},
-    //                  {'-', '-', '-'}};
-
-    //generates partial game tree with the following initial state
-    char ar[3][3] = {{'X', '-', '-'},
-                     {'-', 'O', '-'},
-                     {'-', '-', 'X'}};
-
-    for (int i = 0; i < 3; i++)
-        for (int j = 0; j < 3; j++)
-            Root->TicTacToe[i][j] = ar[i][j];
-
-    generateGameTree(Root);
-    Root->NoOfNodes = calc_num_nodes(Root);
-    return Root;
 }
 
 void generateTree(Node *NodeArray, int N) //generates a tree out of the array of nodes
@@ -439,11 +423,8 @@ void generateTree(Node *NodeArray, int N) //generates a tree out of the array of
     }
 }
 
-Node inputTree() //takes input from the user and returns a tree
+Node inputTree(int NoOfNodes) //takes input from the user and returns a tree
 {
-    int NoOfNodes;
-    scanf("%d", &NoOfNodes);
-
     Node *NodeArray = (Node *)malloc(NoOfNodes * sizeof(Node));
     assert(NodeArray != NULL);
     for (int i = 0; i < NoOfNodes; i++) //takes each node as input and feeds it into an array of nodes
@@ -465,30 +446,6 @@ Node inputTree() //takes input from the user and returns a tree
     return Root;
 }
 
-void printNode(Node TreeNode) //prints the attributes of a node
-{
-    printf("State Number: %d\n", TreeNode->state_number);
-    printf("Value: %d\n", TreeNode->value);
-    if (TreeNode->parent == -1)
-        printf("Parent: -\n");
-    else
-        printf("Parent: %d\n", TreeNode->parent);
-    printf("Depth: %d\n", TreeNode->depth);
-    printf("Seen Time: %d\n", TreeNode->seen_time);
-    printf("\nNumber of Children: %d\n", TreeNode->number_of_children);
-
-    if (TreeNode->number_of_children == 0)
-    {
-        printf("Children: -\n\n");
-        return;
-    }
-
-    printf("Children: ");
-    for (int i = 0; i < TreeNode->number_of_children; i++)
-        printf("%d ", TreeNode->children[i]->value);
-    printf("\n\n");
-}
-
 void printTree(Node TreeNode) //traverses through each node of the tree and prints its attributes
 {
     printNode(TreeNode);
@@ -497,7 +454,7 @@ void printTree(Node TreeNode) //traverses through each node of the tree and prin
         printTree(TreeNode->children[i]);
 }
 
-void DeleteTree(Node TreeNode)
+void DeleteTree(Node TreeNode)  //Deletes a given tree and deallocates memory for it
 {
     if (TreeNode->number_of_children == 0)
     {
@@ -512,7 +469,7 @@ void DeleteTree(Node TreeNode)
     free(TreeNode);
 }
 
-void printTree2(Node TreeNode)
+void printTree2(Node TreeNode)      //Prints an elegant version of a tree
 {
     int a[100000] = {0};
     printNodenoice(TreeNode, a);
@@ -547,7 +504,7 @@ void printNodenoice(Node TreeNode, int what_to_do[])
     }
 }
 
-void printGameNodenoice(Node TreeNode, int what_to_do[])
+void printGameNodenoice(Node TreeNode, int what_to_do[])    
 {
 
     for (int i = 0; i < 3; i++)
@@ -563,11 +520,10 @@ void printGameNodenoice(Node TreeNode, int what_to_do[])
                 printf("│     ");
         }
     }
-    printf("\n");
+    printf("Heuristic: %d\n",TreeNode->heuristic);
 
     for (int i = 0; i < TreeNode->number_of_children; i++)
     {
-
         for (int i = 0; i < TreeNode->depth; i++)
         {
             if (what_to_do[i])
@@ -588,21 +544,21 @@ void printGameNodenoice(Node TreeNode, int what_to_do[])
         printGameNodenoice(TreeNode->children[i], what_to_do);
     }
 }
-void printTree3(Node TreeNode)
+void printTree3(Node TreeNode)      //prints an elegant version of a Tic-Tac-Toe game tree
 {
     int a[100000] = {0};
     printGameNodenoice(TreeNode, a);
 }
 
-void free_memory_alloc_stats()
+void free_memory_alloc_stats()      //deallocates memory for the statistical parameters of a tree
 {
-
     free(maxdepth);
     free(maxchildren);
     free(avgdepth);
     return;
 }
-void Print_Game_Node(Node p)
+
+void Print_Game_Node(Node p)        //Simulates and prints a Tic-Tac-Toe game from a generated game tree
 {
     int count = 0;
     for (int i = 0; i < 3; i++)

@@ -4,19 +4,22 @@
 #include <stdbool.h>
 #include "node.h"
 #define ll long long
-int max(int a, int b)
+
+int max(int a, int b)       //return the maximum of two integers
 {
     if (a >= b)
         return a;
     else
         return b;
 }
-void swap(node **a, node **b)
+
+void swap(node **a, node **b)       //swaps two nodes
 {
     node *c = *a;
     *a = *b;
     *b = c;
 }
+
 bool isempty(node *priority_queue[], int n) //checks if the priority queue is empty(1) or not(0)
 {
     for (int i = 0; i < n; i++)
@@ -26,7 +29,8 @@ bool isempty(node *priority_queue[], int n) //checks if the priority queue is em
     }
     return true;
 }
-void heapify(node **priority_queue, int i, int queue_size, char str[])
+
+void heapify(node **priority_queue, int i, int queue_size, char str[])      //maintains the properties of a heap by restructuring it in case of any change
 {
     if ((i - 1) / 2 > 0)
     {
@@ -71,19 +75,25 @@ void heapify(node **priority_queue, int i, int queue_size, char str[])
         }
     }
 }
-void traversing_algo(node *root, int n, char str[])
+
+void traversing_algo(node *root, int n, char str[])     //implements the traversal of a tree (or game tree) based on a selected comparator by the user 
 {
     // we make a priority queue of n pointers of type node *
     node **priority_queue = (node **)malloc(n * sizeof(node *));
     assert(priority_queue != NULL);
+
     maxdepth = (int *)malloc(sizeof(int) * n);
     assert(maxdepth != NULL);
+
     avgdepth = (double *)malloc(sizeof(double) * n);
     assert(avgdepth != NULL);
+
     maxchildren = (int *)malloc(sizeof(int) * n);
     assert(maxchildren != NULL);
+
     traversal_order = (Node *)malloc(n * sizeof(Node *));
     assert(traversal_order != NULL);
+
     int iteration = 0;
     int queue_size = 0, seen_time = 0; // declaration and initialization of queue size and time as we go forward
                                        //seen_time updates the seen_time variable of each node when it is inserted into the priority queue
@@ -97,11 +107,13 @@ void traversing_algo(node *root, int n, char str[])
     seen_time++;
     queue_size++;
     int maxdepthsize = 0;
+
     // loop for traversal
     long int depths = 0; //keeps track of depth
     long int average_depth = 0;
     int numberofelems = 1;
-    int trackchildren = 0;                       //keeps track of maxchildren
+    int trackchildren = 0;   //keeps track of maxchildren
+
     while (!isempty(priority_queue, queue_size)) // while priority queue is not empty
     {
         for (int i = 0; i < priority_queue[0]->number_of_children; i++)
@@ -110,9 +122,12 @@ void traversing_algo(node *root, int n, char str[])
             priority_queue[0]->children[i]->seen_time = seen_time;       //seen time of the child updated (will be used for comparators)
             seen_time++;
             queue_size++;
+            
             heapify(priority_queue, queue_size - 1, queue_size, str); //the ith child is added to its correct location in the priority queue using comparator
         }
+        
         swap(&priority_queue[0], &priority_queue[queue_size - 1]);   //pop the first element from the priority queue by swapping with last element
+        
         traversal_order[iteration] = priority_queue[queue_size - 1]; // Add the node pointer to the traversal order array
         iteration++;
         //printNode(priority_queue[queue_size - 1]);                 //print the first element which has now been moved to the last
@@ -120,6 +135,7 @@ void traversing_algo(node *root, int n, char str[])
         depths = max(depths, priority_queue[queue_size - 1]->depth);
         maxdepth[maxdepthsize] = depths;                          //max depth at each iteration
                                                                   // bfactor[maxdepthsize] = priority_queue[queue_size - 1]->number_of_children;
+       
         if (priority_queue[queue_size - 1]->linktoparent != NULL) //max children at each iteration
         {
 
@@ -136,11 +152,13 @@ void traversing_algo(node *root, int n, char str[])
 
         priority_queue[queue_size - 1] = NULL;
         queue_size--;
+        
         heapify(priority_queue, 0, queue_size, str);
     }
     free(priority_queue);
 }
-void printstats(int N) //prints the statistics avgdepth,maxdepth,maxchildren
+
+void printstats(int N) //prints the statistical parameters of a tree wiz. avgdepth, maxdepth and maxchildren
 {
     assert(traversal_order != NULL);
     assert(maxchildren != NULL);
