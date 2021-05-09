@@ -364,7 +364,10 @@ void generateGameTree(Node GameNode)
             for (int j = 0; j < 3; j++)
                 if (i + j <= 2 && GameNode->TicTacToe[i][j] == '-')
                     AddChild(GameNode, i, j);
-
+    if (Symmetry(GameNode->TicTacToe) == 7)
+        for (int i = 0; i < 3; i++)
+            if (GameNode->TicTacToe[0][i] == '-')
+                AddChild(GameNode, 0, i);
     if (Symmetry(GameNode->TicTacToe) == 10)
     {
         if (GameNode->TicTacToe[0][0] == '-')
@@ -374,7 +377,6 @@ void generateGameTree(Node GameNode)
         if (GameNode->TicTacToe[1][1] == '-')
             AddChild(GameNode, 1, 1);
     }
-
     // if (Symmetry(GameNode->TicTacToe) == 0)
     else
     {
@@ -411,9 +413,9 @@ Node inputGameTree()
     //                  {'-', '-', '-'}};
 
     //generates partial game tree with the following initial state
-    char ar[3][3] = {{'-', 'O', '-'},
-                     {'-', 'X', '-'},
-                     {'-', '-', '-'}};
+    char ar[3][3] = {{'X', '-', '-'},
+                     {'-', 'O', '-'},
+                     {'-', '-', 'X'}};
 
     for (int i = 0; i < 3; i++)
         for (int j = 0; j < 3; j++)
