@@ -13,9 +13,13 @@ int main(void)
     //traversing_algo(root, root->NoOfNodes, str); // runs the search algorithm based on the comparator
     //DeleteTree(root);                            // frees the memory of the tree
 
-    Node root = inputGameTree();
-    // printTree3(root);
-    traversing_algo(root, 20, str);
-    DeleteTree(root);
+    //Node root = inputGameTree();
+    //printTree3(root);
+    //traversing_algo(root, 20, str);
+    //MCTS_traversal(root);
+
+    Node root = inputMCTS();
+    MCTS_traversal(root);
+
     return 0;
 }

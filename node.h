@@ -35,6 +35,8 @@ typedef struct node
     // You (as a developer) can add any extra information here [Will not be touched by user]
     int depth, seen_time, number_of_children, NoOfNodes;
     int heuristic;
+    long long int WinCount,SelectNodeVisit;
+    long double UCB;
     char game_state,TicTacToe[3][3];
     struct node *children[10000];
 } node;
@@ -50,10 +52,16 @@ void printNode(Node TreeNode);             //prints the attributes of a node
 void printTree(Node TreeNode);             //traverses through each node of the tree and prints its attributes
 void printTree2(Node TreeNode);            //shows the structure of the tree while printing minimal information (the state number and value)
 void DeleteTree(Node TreeNode);            //Frees memory allocated to the tree
+void DeleteTree2(Node TreeNode);
 
 Node inputGameTree();
+void ExpandGameNode(Node GameNode);
 void generateGameTree(Node GameNode);
 void printTree3(Node GameNode);
+int checkGameOver(Node GameNode);
+int calc_heuristic(char a[3][3], char state);
+Node inputMCTS();
+void MCTS_traversal(Node GameNode);
 
 void swap(node **a, node **b);
 bool isempty(node *priority_queue[], int n); //checks if the priority queue is empty(1) or not(0)

@@ -91,6 +91,9 @@ void AddChild(Node GameNode, int x, int y)
     else
         Child->game_state = 'X';
 
+    GameNode->SelectNodeVisit = 0;
+    GameNode->WinCount = 0;
+
     GameNode->children[GameNode->number_of_children] = Child;
     GameNode->number_of_children++;
 }
@@ -375,7 +378,12 @@ void generateGameTree(Node GameNode)
             for (int j = 0; j < 3; j++)
                 if (i + j <= 2 && GameNode->TicTacToe[i][j] == '-')
                     AddChild(GameNode, i, j);
-
+    
+    if (Symmetry(GameNode->TicTacToe) == 7)
+        for(int i = 0 ; i < 3 ; i++)
+            if(GameNode->TicTacToe[0][i] == '-')
+                AddChild(GameNode,0,i);
+    
     if (Symmetry(GameNode->TicTacToe) == 10)
     {
         if (GameNode->TicTacToe[0][0] == '-')
@@ -520,6 +528,14 @@ void DeleteTree(Node TreeNode)
         DeleteTree(TreeNode->children[i]);
     }
     free(TreeNode);
+}
+
+void DeleteTree2(Node TreeNode)
+{
+    for (int i = 0; i < TreeNode->number_of_children; i++)
+        DeleteTree(TreeNode->children[i]);
+    
+    TreeNode->number_of_children = 0;
 }
 
 void printTree2(Node TreeNode)
