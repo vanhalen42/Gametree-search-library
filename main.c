@@ -19,6 +19,7 @@ int main(void)
     //MCTS_traversal(root);
 
     Node root = inputMCTS();
+    
     MCTS_traversal(root);
 
     return 0;

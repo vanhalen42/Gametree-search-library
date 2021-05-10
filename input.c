@@ -91,9 +91,6 @@ void AddChild(Node GameNode, int x, int y)
     else
         Child->game_state = 'X';
 
-    GameNode->SelectNodeVisit = 0;
-    GameNode->WinCount = 0;
-
     GameNode->children[GameNode->number_of_children] = Child;
     GameNode->number_of_children++;
 }
@@ -498,7 +495,7 @@ void printNode(Node TreeNode) //prints the attributes of a node
     //     printf("%d ", TreeNode->children[i]->value);
     // printf("\n\n");
     printf("game state: %c\n", TreeNode->game_state);
-    printf("heuristic : %d\n", TreeNode->heuristic);
+    printf("UCB: %Lf\n", TreeNode->UCB);
     for (int i = 0; i < 3; i++)
     {
         for (int j = 0; j < 3; j++)
@@ -532,8 +529,9 @@ void DeleteTree(Node TreeNode)
 
 void DeleteTree2(Node TreeNode)
 {
-    for (int i = 0; i < TreeNode->number_of_children; i++)
-        DeleteTree(TreeNode->children[i]);
+    for(int i = 0; i < TreeNode->number_of_children; i++)
+        if(TreeNode->children[i] != NULL)
+            DeleteTree(TreeNode->children[i]);
     
     TreeNode->number_of_children = 0;
 }
@@ -589,7 +587,7 @@ void printGameNodenoice(Node TreeNode, int what_to_do[])
                 printf("│     ");
         }
     }
-    printf("\n");
+    printf("UCB: %Lf    NodesVisited: %lld      Win_Count: %lld\n",TreeNode->UCB,TreeNode->SelectNodeVisit,TreeNode->WinCount);
 
     for (int i = 0; i < TreeNode->number_of_children; i++)
     {

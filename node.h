@@ -55,6 +55,8 @@ void DeleteTree(Node TreeNode);            //Frees memory allocated to the tree
 void DeleteTree2(Node TreeNode);
 
 Node inputGameTree();
+int Symmetry(char ar[3][3]);
+void AddChild(Node GameNode, int x, int y);
 void ExpandGameNode(Node GameNode);
 void generateGameTree(Node GameNode);
 void printTree3(Node GameNode);
@@ -62,6 +64,7 @@ int checkGameOver(Node GameNode);
 int calc_heuristic(char a[3][3], char state);
 Node inputMCTS();
 void MCTS_traversal(Node GameNode);
+int checkIfBadMove(Node GameNode);
 
 void swap(node **a, node **b);
 bool isempty(node *priority_queue[], int n); //checks if the priority queue is empty(1) or not(0)

@@ -22,7 +22,6 @@ long double CalculateUCB(Node GameNode, long int TotalNodesVisited)
     else
         temp = (((long double) GameNode->WinCount) / ((long double) GameNode->SelectNodeVisit)) + 1.41 * sqrtl( log((long double) TotalNodesVisited) / ((long double) GameNode->SelectNodeVisit));
     
-    GameNode->SelectNodeVisit++;
     return temp;
 }
 
@@ -120,27 +119,50 @@ Node Expansion(NodeQueue Q, Node Root, long int TotalNodesVisited)
 
 Node GenerateRandomChild(Node GameNode)
 {
-
+    ExpandGameNode(GameNode);
+    if(GameNode->number_of_children == 0)
+        return NULL;
+    int i = rand() % GameNode->number_of_children;
+    Node temp = GameNode->children[i];
+    GameNode->children[i] = NULL;
+    DeleteTree2(GameNode);
+    return temp;
 }
 
-Node RandomChild(Node GameNode)     //wrong...will not work
+Node RandomChild(Node GameNode)
 {
     int i = rand() % GameNode->number_of_children;
     return GameNode->children[i];
+}
+
+int checkIfBadMove(Node GameNode)
+{
+    ExpandGameNode(GameNode);
+    for(int i = 0 ; i < GameNode->number_of_children ; i++)
+    {
+        Node temp = GameNode->children[i];
+        if(checkGameOver(temp) == 1)
+        {    
+            DeleteTree2(GameNode);
+            return 1;
+        }
+    }
+    DeleteTree2(GameNode);
+    return 0;
 }
 
 void SimulatePath(Node GameNode, NodeQueue Q)
 {
     if(checkGameOver(GameNode) != 0)
         return;
-    
-    if((GameNode->heuristic == 50 && GameNode->game_state == 'X') || (GameNode->heuristic == -50 && GameNode->game_state == 'O'))
-    {
-        GameNode->WinCount = LONG_MIN;
-        return;
-    }
 
-    Node temp = GenerateRandomChild(GameNode);
+    Node temp = RandomChild(GameNode);
+
+    if(checkIfBadMove(temp) == 1)
+    {
+        temp->WinCount = LONG_MIN;
+        //return;
+    }
     
     while(checkGameOver(temp) == 0)
     {
@@ -162,6 +184,7 @@ void Backtrack(NodeQueue Q, int j, long int TotalNodesVisited)
     
     for(int i = Q->n - 1 ; i >= 0 ; i--)
     {
+        Q->Queue[i]->SelectNodeVisit++;
         if(Q->Queue[i]->game_state == win_state)
             Q->Queue[i]->WinCount++;
         if(i <= j)
@@ -188,14 +211,16 @@ void MCTS(Node Root)
 
     while(((double) (time(NULL) - t)  <=  1))
     {        
+        TotalNodesVisited++;;
         Selection(Root,Q);
-
         int m = Q->n - 1;
 
         Node temp = Expansion(Q,Root,TotalNodesVisited);
         SimulatePath(temp,Q);
+        //for(int i = 0 ; i < Q->n ; i++)
+        //    printNode(Q->Queue[i]);
         Backtrack(Q,m,TotalNodesVisited);
-    
+
         for(int i = 0 ; i < Q->n ; i++)
             Q->Queue[i] = NULL;
         Q->n = 0;
@@ -208,13 +233,13 @@ void MCTS_traversal(Node GameNode)
 {   
     MCTS(GameNode);
     printNode(GameNode);
-    //printTree3(GameNode);
 
     long double max = LONG_MIN;
     Node temp = NULL;
 
     for(int i = 0 ; i < GameNode->number_of_children; i++)
     {
+        DeleteTree2(GameNode->children[i]);
         if(GameNode->children[i]->UCB > max)
         {
             max = GameNode->children[i]->UCB;
@@ -224,8 +249,8 @@ void MCTS_traversal(Node GameNode)
 
     if(temp == NULL)
         return;
-        
-    DeleteTree2(temp);
+
+    //printTree3(GameNode);
     MCTS_traversal(temp);
 }
 
