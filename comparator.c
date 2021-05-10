@@ -1,5 +1,5 @@
 /*===========================================================================================================
-This file is a user modifiable file. The user can use this toinput the different parameters that they can   |
+This file is a user modifiable file. The user can use this to input the different parameters that they can   |
 define in node.h and build the tree according to their requirements.They can also add functions to print the|
 traversal order or even print the tree.                                                                     |
                                                                                                             |
