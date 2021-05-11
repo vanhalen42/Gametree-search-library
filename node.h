@@ -35,7 +35,7 @@ typedef struct node
     // You (as a developer) can add any extra information here [Will not be touched by user]
     int depth, seen_time, number_of_children, NoOfNodes;
     int heuristic;
-    long long int WinCount,SelectNodeVisit;
+    long double WinCount,SelectNodeVisit;
     long double UCB;
     char game_state,TicTacToe[3][3];
     struct node *children[10000];

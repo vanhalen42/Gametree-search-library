@@ -112,8 +112,12 @@ Node Expansion(NodeQueue Q, Node Root, long int TotalNodesVisited)
 
     ExpandGameNode(temp);
     for(int i = 0 ; i < temp->number_of_children ; i++)
-        temp->children[i]->UCB = CalculateUCB(temp->children[i],TotalNodesVisited);
+    {
+        //if(checkIfBadMove(temp->children[i]) == 1)
+        //    temp->children[i]->WinCount = LONG_MIN;
 
+        temp->children[i]->UCB = LONG_MAX;
+    }
     return temp;
 }
 
@@ -151,33 +155,27 @@ int checkIfBadMove(Node GameNode)
     return 0;
 }
 
-void SimulatePath(Node GameNode, NodeQueue Q)
+int SimulatePath(Node GameNode, NodeQueue Q)
 {
     if(checkGameOver(GameNode) != 0)
-        return;
+        return checkGameOver(GameNode);
 
     Node temp = RandomChild(GameNode);
-
-    if(checkIfBadMove(temp) == 1)
-    {
-        temp->WinCount = LONG_MIN;
-        //return;
-    }
     
-    while(checkGameOver(temp) == 0)
-    {
-        Q->Queue[Q->n] = temp;
-        Q->n++;
-        temp = GenerateRandomChild(temp);
-    }
-
+    //if(checkIfBadMove(temp) == 1)
+    //    temp->WinCount = LONG_MIN;
+    
     Q->Queue[Q->n] = temp;
     Q->n++;
+
+    while(checkGameOver(temp) == 0)
+        temp = GenerateRandomChild(temp);
+
+    return checkGameOver(temp);
 }
 
-void Backtrack(NodeQueue Q, int j, long int TotalNodesVisited)
+void Backtrack(NodeQueue Q, int outcome, long int TotalNodesVisited)
 {
-    int outcome = checkGameOver(Q->Queue[Q->n - 1]);
     char win_state = '-';
     if(outcome == 1)
         win_state = Q->Queue[Q->n - 1]->game_state;
@@ -185,10 +183,13 @@ void Backtrack(NodeQueue Q, int j, long int TotalNodesVisited)
     for(int i = Q->n - 1 ; i >= 0 ; i--)
     {
         Q->Queue[i]->SelectNodeVisit++;
+        
         if(Q->Queue[i]->game_state == win_state)
             Q->Queue[i]->WinCount++;
-        if(i <= j)
-            Q->Queue[i]->UCB = CalculateUCB(Q->Queue[i],TotalNodesVisited);
+        else if(outcome == 2)
+            Q->Queue[i]->WinCount += 0.5;
+
+        Q->Queue[i]->UCB = CalculateUCB(Q->Queue[i],TotalNodesVisited);
     }
 }
 
@@ -208,24 +209,23 @@ void MCTS(Node Root)
 
     Q->n = 0;
     long int TotalNodesVisited = 0;
-
+    //for(int i = 0 ; i < 100 ; i++){
     while(((double) (time(NULL) - t)  <=  1))
     {        
         TotalNodesVisited++;;
         Selection(Root,Q);
-        int m = Q->n - 1;
 
         Node temp = Expansion(Q,Root,TotalNodesVisited);
-        SimulatePath(temp,Q);
+        int outcome = SimulatePath(temp,Q);
         //for(int i = 0 ; i < Q->n ; i++)
         //    printNode(Q->Queue[i]);
-        Backtrack(Q,m,TotalNodesVisited);
+        Backtrack(Q,outcome,TotalNodesVisited);
 
         for(int i = 0 ; i < Q->n ; i++)
             Q->Queue[i] = NULL;
         Q->n = 0;
     }
-
+    //}
     free(Q);
 }
 
@@ -234,15 +234,15 @@ void MCTS_traversal(Node GameNode)
     MCTS(GameNode);
     printNode(GameNode);
 
-    long double max = LONG_MIN;
+    long double max = LLONG_MIN;
     Node temp = NULL;
 
     for(int i = 0 ; i < GameNode->number_of_children; i++)
     {
         DeleteTree2(GameNode->children[i]);
-        if(GameNode->children[i]->UCB > max)
+        if(GameNode->children[i]->SelectNodeVisit > max)
         {
-            max = GameNode->children[i]->UCB;
+            max = GameNode->children[i]->SelectNodeVisit;
             temp = GameNode->children[i];
         }
     }
@@ -260,17 +260,17 @@ Node inputMCTS()
     assert(Root != NULL);
 
     Root->number_of_children = 0;
-    Root->game_state = 'X';
+    Root->game_state = 'O';
 
     //uncomment the below snippet to generate complete game tree
-    // char ar[3][3] = {{'-','-','-'},
+    //char ar[3][3] = {{'-','-','-'},
     //                 {'-','-','-'},
     //                 {'-','-','-'}};
 
     //generates partial game tree with the following initial state
     char ar[3][3] = {{'X', '-', '-'},
                      {'-', 'O', '-'},
-                     {'-', '-', '-'}};
+                     {'-', '-', 'X'}};
 
     for (int i = 0; i < 3; i++)
         for (int j = 0; j < 3; j++)

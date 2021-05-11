@@ -496,6 +496,8 @@ void printNode(Node TreeNode) //prints the attributes of a node
     // printf("\n\n");
     printf("game state: %c\n", TreeNode->game_state);
     printf("UCB: %Lf\n", TreeNode->UCB);
+    printf("Times Visited: %Lf\n",TreeNode->SelectNodeVisit);
+    printf("Number of Wins: %Lf\n",TreeNode->WinCount);
     for (int i = 0; i < 3; i++)
     {
         for (int j = 0; j < 3; j++)
@@ -587,7 +589,7 @@ void printGameNodenoice(Node TreeNode, int what_to_do[])
                 printf("│     ");
         }
     }
-    printf("UCB: %Lf    NodesVisited: %lld      Win_Count: %lld\n",TreeNode->UCB,TreeNode->SelectNodeVisit,TreeNode->WinCount);
+    printf("UCB: %Lf    NodesVisited: %Lf      Win_Count: %Lf\n",TreeNode->UCB,TreeNode->SelectNodeVisit,TreeNode->WinCount);
 
     for (int i = 0; i < TreeNode->number_of_children; i++)
     {
